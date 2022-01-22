@@ -15,21 +15,29 @@ import Wallet from "@project-serum/sol-wallet-adapter"; // see next.config.js
 
 
 
+// const network = "https://solana-api.projectserum.com"; // main net
+const network = "https://api.devnet.solana.com"; // dev net
+// const network = "https://api.testnet.solana.com"; // test net
 
+// const tokenListNetwork = "mainnet-beta";
+const tokenListNetwork = "devnet";
+        
 
 
 const Swap: NextPage = () => {
     const __wallet = useWallet();
-    // console.log("__wallet");
-    // console.log(__wallet);
 
     const { enqueueSnackbar } = useSnackbar();
     const [isConnected, setIsConnected] = useState(false);
     const [tokenList, setTokenList] = useState<TokenListContainer | null>(null);
     
+
     useEffect(() => {
-        new TokenListProvider().resolve().then(setTokenList);
-      }, [setTokenList]);
+      new TokenListProvider().resolve().then((tokens) => {
+        const filteredTokens = tokens.filterByClusterSlug(tokenListNetwork);
+        setTokenList(filteredTokens);
+      });
+    }, [setTokenList]);
 
       
       // @ts-ignore
@@ -42,16 +50,13 @@ const Swap: NextPage = () => {
             preflightCommitment: "recent",
             commitment: "recent",
         };
-        const network = "https://solana-api.projectserum.com";
 
         // const wallet = new Wallet("https://www.sollet.io", network); // OROGINAL
         // const walletBis = __wallet;
 
+        // const walletBis = __wallet;
         // @ts-ignore
         const walletBis = __wallet.wallet.adapter._wallet;
-
-        // console.log('walletBis');
-        // console.log(walletBis);
 
         // Avoid error that happens right after "disconnect"
         if (!walletBis) {
@@ -94,12 +99,15 @@ const Swap: NextPage = () => {
 
       // Connect to the wallet.
       useEffect(() => {
-        if (!isEventSet && wallet) {
+        // @ts-ignore
+        if (!isEventSet && wallet && wallet?.on) {
           setIsEventSet(true);
+          // @ts-ignore
           wallet.on("connect", () => {
             enqueueSnackbar("Wallet connected", { variant: "success" });
             setIsConnected(true);
           });
+          // @ts-ignore
           wallet.on("disconnect", () => {
             enqueueSnackbar("Wallet disconnected", { variant: "info" });
             setIsConnected(false);
@@ -108,13 +116,7 @@ const Swap: NextPage = () => {
         else if (!wallet && !isEventSet) {
           setIsEventSet(false);
         }
-      }, [wallet, enqueueSnackbar, isEventSet]);
-
-  
-      console.log("provider");
-      console.log(provider);
-      
-
+      }, [wallet, enqueueSnackbar, isEventSet]);      
 
     return (
         <div className={styles.container}>
@@ -122,8 +124,10 @@ const Swap: NextPage = () => {
               <SwapUI
                 provider={provider}
                 tokenList={tokenList} 
-                fromAmount={1000}
-                toAmount={2000}
+                // Dev net
+                // tokenList={tokenList.filterByChainId(103)} 
+                // fromAmount={1000}
+                // toAmount={2000}
               />
             )}
             {/* <button onClick={() => {
