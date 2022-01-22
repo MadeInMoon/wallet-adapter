@@ -26,12 +26,25 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@emotion/react": "^11.7.1",
+        "@emotion/styled": "^11.6.0",
+        "@material-ui/core": "^4.12.3",
+        "@material-ui/icons": "^4.11.2",
+        "@material-ui/lab": "^4.0.0-alpha.60",
+        "@project-serum/anchor": "^0.20.1",
+        "@project-serum/swap-ui": "^0.2.5",
+        "@solana/spl-token-registry": "^0.2.1677",
         "@solana/wallet-adapter-base": "^0.9.1",
         "@solana/wallet-adapter-react": "^0.15.1",
         "@solana/wallet-adapter-react-ui": "^0.9.1",
         "@solana/wallet-adapter-wallets": "^0.14.1",
+        "@solana/web3.js": "^1.32.0",
+        "material-ui-popup-state": "^2.0.0",
         "next": "12.0.7",
+        "next-transpile-modules": "^9.0.0",
+        "notistack": "^2.0.3",
         "react": "17.0.2",
+        "react-async-hook": "^4.0.0",
         "react-dom": "17.0.2"
     },
     "devDependencies": {
