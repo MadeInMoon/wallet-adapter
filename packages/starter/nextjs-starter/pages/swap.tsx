@@ -111,17 +111,19 @@ const Swap: NextPage = () => {
       }, [wallet, enqueueSnackbar, isEventSet]);
 
   
-      // console.log("provider");
-      // console.log(provider);
+      console.log("provider");
+      console.log(provider);
       
 
 
     return (
         <div className={styles.container}>
             {tokenList && provider && (
-              <SwapUI provider={provider} tokenList={tokenList} 
-              fromAmount={1000}
-              toAmount={2000}
+              <SwapUI
+                provider={provider}
+                tokenList={tokenList} 
+                fromAmount={1000}
+                toAmount={2000}
               />
             )}
             {/* <button onClick={() => {

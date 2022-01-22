@@ -8,10 +8,6 @@ import { SnackbarProvider } from 'notistack';
 import Swap from './swap';
 
 const Home: NextPage = () => {
-    const wallet = useWallet();
-    console.log("wallet");
-    console.log(wallet);
-    
     return (
         <div className={styles.container}>
             <Head>
