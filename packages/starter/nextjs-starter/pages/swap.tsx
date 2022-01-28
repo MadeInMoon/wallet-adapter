@@ -8,19 +8,39 @@ import { TokenListContainer, TokenListProvider } from '@solana/spl-token-registr
 import { useEffect, useMemo, useState } from 'react';
 import SwapUI from "@project-serum/swap-ui";
 import { Provider } from '@project-serum/anchor';
-import { ConfirmOptions, Connection } from '@solana/web3.js';
+import { ConfirmOptions, Connection, PublicKey } from '@solana/web3.js';
 import { useSnackbar } from 'notistack';
 import NotifyingProvider from './NotificationProvider';
 import Wallet from "@project-serum/sol-wallet-adapter"; // see next.config.js 
 
 
+/**
+ * To earn referral fees, one can also pass in a referral property, which is the PublicKey 
+ * of the Solana wallet that owns the associated token accounts in which referral fees are
+ * paid (i.e., USDC and USDT).
+ */
+const referralPubliKey = new PublicKey('26H2btPLD5i6w18VBGYabDAjEo6nCKXZR5q6FytvLJm3');
 
-// const network = "https://solana-api.projectserum.com"; // main net
-const network = "https://api.devnet.solana.com"; // dev net
-// const network = "https://api.testnet.solana.com"; // test net
+// const currentEnv = 'mainnet';
+// const currentEnv = 'devnet';
+const currentEnv = 'testnet';
 
-// const tokenListNetwork = "mainnet-beta";
-const tokenListNetwork = "devnet";
+const configs = {
+  mainnet: {
+    network: "https://solana-api.projectserum.com",
+    tokenListNetwork: "mainnet-beta",
+  },
+  devnet: {
+    network: "https://api.devnet.solana.com",
+    tokenListNetwork: "devnet",
+  },
+  testnet: {
+    network: "https://api.testnet.solana.com",
+    tokenListNetwork: 'testnet',
+  },
+}
+
+const config = configs[currentEnv];
         
 
 
@@ -34,7 +54,7 @@ const Swap: NextPage = () => {
 
     useEffect(() => {
       new TokenListProvider().resolve().then((tokens) => {
-        const filteredTokens = tokens.filterByClusterSlug(tokenListNetwork);
+        const filteredTokens = tokens.filterByClusterSlug(config.tokenListNetwork);
         setTokenList(filteredTokens);
       });
     }, [setTokenList]);
@@ -63,7 +83,7 @@ const Swap: NextPage = () => {
           return [];
         }
 
-        const connection = new Connection(network, opts.preflightCommitment);
+        const connection = new Connection(config.network, opts.preflightCommitment);
         const provider = new NotifyingProvider(
           connection,
           walletBis,
@@ -124,8 +144,7 @@ const Swap: NextPage = () => {
               <SwapUI
                 provider={provider}
                 tokenList={tokenList} 
-                // Dev net
-                // tokenList={tokenList.filterByChainId(103)} 
+                referral={referralPubliKey}
                 // fromAmount={1000}
                 // toAmount={2000}
               />
