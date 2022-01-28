@@ -12,6 +12,7 @@ import { ConfirmOptions, Connection, PublicKey } from '@solana/web3.js';
 import { useSnackbar } from 'notistack';
 import NotifyingProvider from './NotificationProvider';
 import Wallet from "@project-serum/sol-wallet-adapter"; // see next.config.js 
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 
 
 /**
@@ -21,26 +22,29 @@ import Wallet from "@project-serum/sol-wallet-adapter"; // see next.config.js
  */
 const referralPubliKey = new PublicKey('26H2btPLD5i6w18VBGYabDAjEo6nCKXZR5q6FytvLJm3');
 
-// const currentEnv = 'mainnet';
+const currentEnv = 'mainnet';
 // const currentEnv = 'devnet';
-const currentEnv = 'testnet';
+// const currentEnv = 'testnet';
 
 const configs = {
   mainnet: {
     network: "https://solana-api.projectserum.com",
     tokenListNetwork: "mainnet-beta",
+    walletAdapterNetwork: WalletAdapterNetwork.Mainnet,
   },
   devnet: {
     network: "https://api.devnet.solana.com",
     tokenListNetwork: "devnet",
+    walletAdapterNetwork: WalletAdapterNetwork.Devnet,
   },
   testnet: {
     network: "https://api.testnet.solana.com",
     tokenListNetwork: 'testnet',
+    walletAdapterNetwork: WalletAdapterNetwork.Testnet,
   },
 }
 
-const config = configs[currentEnv];
+export const networkConfig = configs[currentEnv];
         
 
 
@@ -54,7 +58,7 @@ const Swap: NextPage = () => {
 
     useEffect(() => {
       new TokenListProvider().resolve().then((tokens) => {
-        const filteredTokens = tokens.filterByClusterSlug(config.tokenListNetwork);
+        const filteredTokens = tokens.filterByClusterSlug(networkConfig.tokenListNetwork);
         setTokenList(filteredTokens);
       });
     }, [setTokenList]);
@@ -83,7 +87,7 @@ const Swap: NextPage = () => {
           return [];
         }
 
-        const connection = new Connection(config.network, opts.preflightCommitment);
+        const connection = new Connection(networkConfig.network, opts.preflightCommitment);
         const provider = new NotifyingProvider(
           connection,
           walletBis,

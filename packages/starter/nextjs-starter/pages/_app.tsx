@@ -13,6 +13,7 @@ import {
 import { clusterApiUrl } from '@solana/web3.js';
 import { AppProps } from 'next/app';
 import { FC, useMemo } from 'react';
+import { networkConfig } from './swap';
 
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -20,7 +21,11 @@ require('../styles/globals.css');
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
     // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
-    const network = WalletAdapterNetwork.Devnet;
+    // const network = WalletAdapterNetwork.Devnet;
+    const network = networkConfig.walletAdapterNetwork;
+    console.log('network');
+    console.log(network);
+    
 
     // You can also provide a custom RPC endpoint
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
