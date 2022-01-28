@@ -1,5 +1,6 @@
 .container {
-  padding: 0 2rem;
+  padding: 0 1rem;
+  z-index: 1;
 }
 
 .main {
@@ -43,7 +44,9 @@
   margin: 0;
   line-height: 1.15;
   font-size: 4rem;
-  color: #404144;
+  /* color: #404144; */
+  color: rgba(255, 255, 255, 0.9);
+  z-index: 1;
 }
 
 .title,

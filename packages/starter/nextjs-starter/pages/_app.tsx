@@ -23,8 +23,6 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
     // const network = WalletAdapterNetwork.Devnet;
     const network = networkConfig.walletAdapterNetwork;
-    console.log('network');
-    console.log(network);
     
 
     // You can also provide a custom RPC endpoint
@@ -50,6 +48,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
+                    <div id="app-overlay" />
                     <Component {...pageProps} />
                 </WalletModalProvider>
             </WalletProvider>

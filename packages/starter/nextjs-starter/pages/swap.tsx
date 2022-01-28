@@ -149,6 +149,9 @@ const Swap: NextPage = () => {
                 provider={provider}
                 tokenList={tokenList} 
                 referral={referralPubliKey}
+                containerStyle={{
+                  width: '100%'
+                }}
                 // fromAmount={1000}
                 // toAmount={2000}
               />
